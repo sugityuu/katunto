@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家庭総合 テスト対策完全版（超大量問題演習）</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f1f5f9;
+            --text-sub: #94a3b8;
+            --primary: #38bdf8;
+            --accent: #10b981;
+            --danger: #f43f5e;
+            --border: #334155;
+        }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        header {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border-bottom: 1px solid var(--border);
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.75rem;
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        header p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--text-sub);
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+        .panel {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .panel-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-sub);
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .filter-btn, .tab-btn {
+            background-color: #0f172a;
+            border: 1px solid var(--border);
+            color: var(--text-sub);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        .filter-btn.active, .tab-btn.active, .filter-btn:hover, .tab-btn:hover {
+            background-color: var(--primary);
+            color: #0f172a;
+            border-color: var(--primary);
+            font-weight: bold;
+        }
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        .section {
+            display: none;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+        }
+        .section.active {
+            display: block;
+        }
+        h2 {
+            font-size: 1.3rem;
+            color: var(--primary);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        h3 {
+            font-size: 1.1rem;
+            color: #38bdf8;
+            margin-top: 20px;
+            border-left: 3px solid var(--primary);
+            padding-left: 8px;
+        }
+        .quiz-card {
+            background-color: #0f172a;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        .tag {
+            display: inline-block;
+            background-color: rgba(56, 189, 248, 0.1);
+            color: var(--primary);
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+        .options button {
+            display: block;
+            width: 100%;
+            text-align: left;
+            background-color: #1e293b;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 10px 14px;
+            margin: 6px 0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: background 0.2s;
+        }
+        .options button:hover:not(:disabled) {
+            background-color: #334155;
+        }
+        .options button.correct {
+            background-color: rgba(16, 185, 129, 0.2) !important;
+            border-color: var(--accent) !important;
+            color: #34d399;
+            font-weight: bold;
+        }
+        .options button.incorrect {
+            background-color: rgba(244, 63, 94, 0.2) !important;
+            border-color: var(--danger) !important;
+            color: #fb7185;
+        }
+        .explanation {
+            margin-top: 12px;
+            padding: 10px;
+            background-color: #1e293b;
+            border-left: 3px solid var(--accent);
+            font-size: 0.9rem;
+            display: none;
+            border-radius: 4px;
+        }
+        .flashcard-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .flashcard {
+            background-color: #0f172a;
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            min-height: 200px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        .flashcard:hover {
+            border-color: var(--primary);
+        }
+        .action-btn {
+            background-color: var(--primary);
+            color: #0f172a;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: opacity 0.2s;
+        }
+        .action-btn:hover {
+            opacity: 0.9;
+        }
+        ul { padding-left: 20px; color: var(--text-sub); }
+        li { margin-bottom: 6px; }
+        strong { color: var(--text-main); }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>家庭総合 テスト対策完全版</h1>
+    <p>【食30問以上 ＆ 高齢者50問以上】超大量問題演習モード</p>
+</header>
+
+<div class="container">
+    <div class="panel">
+        <div class="panel-title">学習対象エリアの切り替え</div>
+        <div class="btn-group">
+            <button class="filter-btn active" onclick="setCategory('all')">すべてのミックス</button>
+            <button class="filter-btn" onclick="setCategory('food')">1. 食の選び方と安全（30問超）</button>
+            <button class="filter-btn" onclick="setCategory('elderly')">2. 高齢社会と生活・介護（50問超）</button>
+        </div>
+    </div>
+
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('summary')">📚 重要まとめ</button>
+        <button class="tab-btn" onclick="switchTab('quiz')">📝 4択クイズ（大量）</button>
+        <button class="tab-btn" onclick="switchTab('ox')">⭕ 〇×チェック（大量）</button>
+        <button class="tab-btn" onclick="switchTab('flashcard')">🃏 暗記カード</button>
+    </div>
+
+    <div id="summary" class="section active">
+        <h2>重要ポイント・赤文字データ完全まとめ</h2>
+        <div id="sum-food">
+            <h3>🍱 【食の選び方と安全】</h3>
+            <ul>
+                <li><b>旬の食材のメリット</b>：出荷量が多く低価格、栄養価が高くおいしい、環境負荷が少ない[cite: 23]。</li>
+                <li><b>作物生産エネルギー</b>：トマト冬春どり温室加温は<b>11,948kcal</b>（光熱・動力90%）[cite: 24]。</li>
+                <li><b>食品表示法</b>：生鮮（名称・原産地）[cite: 25]、加工（名称・原材料・内容量・期限・保存方法・製造者）。原材料名は添加物以外と添加物を分け、<b>多く含まれる順</b>に記載[cite: 25, 27]。</li>
+                <li><b>アレルギー表示義務8品目</b>：えび、かに、くるみ、小麦、そば、卵、乳、落花生[cite: 29]。アナフィラキシーショックの危険[cite: 29]。</li>
+                <li><b>消費期限 vs 賞味期限</b>：消費期限は早く劣化するもの（安全性の限界）[cite: 28, 30]、賞味期限は劣化が遅いもの（おいしさの限界）[cite: 28, 30]。</li>
+                <li><b>冷蔵庫の温度帯</b>：冷蔵室約4℃、パーシャル約-3℃（肉魚）、チルド約0℃（乳製品・練り物）、冷凍約-20℃、野菜室約16℃[cite: 31]。</li>
+                <li><b>微生物抑止の保存法</b>：乾燥（乾麺等）、発酵（納豆等）、くん煙（ベーコン等）、塩漬け（塩辛等）、砂糖漬け（ジャム等）、酢漬け（ピクルス等）[cite: 32]。</li>
+                <li><b>食中毒統計（令和5年）</b>：事件数1位は<b>寄生虫</b>（44.7%）、患者数1位は<b>ウイルス</b>（5,530人）[cite: 34]。ノロウイルスは冬季・生ガキに注意[cite: 35]。</li>
+                <li><b>アニサキス予防</b>：<b>冷凍（-20℃で24時間以上）</b> または <b>加熱（70℃以上、または60℃で1分間）</b>[cite: 36]。</li>
+                <li><b>HACCP（ハサップ）</b>：従来の抜取検査から、温度・時間管理や異物検出を継続監視・記録する衛生管理方式[cite: 37]。</li>
+                <li><b>食中毒予防3原則</b>：<b>つけない・増やさない・やっつける</b>[cite: 39, 40]。</li>
+                <li><b>食品添加物</b>：指定添加物以外は禁止[cite: 41]。メリット（味・見た目・保存性）[cite: 42]、デメリット（塩分糖分過剰、長期・複合摂取の健康被害不明）[cite: 43]。</li>
+            </ul>
+        </div>
+
+        <div id="sum-elderly">
+            <h3>👵 【高齢社会と生活・介護】</h3>
+            <ul>
+                <li><b>現状データ</b>：平均寿命（男性81歳、女性87歳）[cite: 44]。高齢化率（65歳以上）は<b>29.1%</b>、75歳以上は<b>16.1%</b>[cite: 44]。日本は<b>超高齢社会</b>（21%以上）[cite: 45]。</li>
+                <li><b>生産年齢人口の推移</b>：高齢者1人を支える人数が、1965年 9.1人 → 2025年 2.0人 → 2050年 <b>1.0人</b>へと激減[cite: 48]。</li>
+                <li><b>健康寿命と平均寿命の差</b>：約<b>10年</b>（日常生活に制限がある・介護が必要な期間）[cite: 49]。</li>
+                <li><b>高齢者の3つの不安</b>：健康・お金・孤独[cite: 50]。消費者トラブル（だまされたことに気づきにくい・誰にも言わない）[cite: 50]。転倒・転落の57.7%は自宅で発生[cite: 58]。高齢ドライバー死亡事故の人的要因は操作不適28%[cite: 52]、ブレーキとアクセル踏み違い7.0%[cite: 52]など。</li>
+                <li><b>心身の変化</b>：骨粗しょう症（背骨・手首・足の根元等で骨折しやすい）[cite: 55, 56]。味覚閾値の上昇（特に<b>塩味</b>を感じにくくなり高血圧リスク）[cite: 55, 60]。動脈硬化（脳梗塞・心筋梗塞）[cite: 55, 61]。</li>
+                <li><b>知能の変化</b>：直感や処理スピードの<b>流動性知能</b>は低下しやすいが、言語や判断力の<b>結晶性知能</b>は維持される[cite: 63]。</li>
+                <li><b>介護の原則</b>：着脱衣は不自由な側から着せる<b>「着患脱健」</b>[cite: 85]。呼称は「鈴木さん」など氏名で行う[cite: 85]。</li>
+                <li><b>社会保障と公的年金</b>：憲法25条に基づく[cite: 73]。3階建て構造（1階：国民年金/全員、2階：厚生年金/会社員等、3階：iDeCo等）[cite: 77]。老齢基礎年金満額は年間約81.6万円（令和6年度）[cite: 79]。産休・育休中は保険料免除（将来の受給額に影響なし）[cite: 80]。</li>
+                <li><b>介護保険制度</b>：保険者は<b>市区町村</b>、被保険者は<b>40歳以上</b>[cite: 96]。利用料は1〜3割負担[cite: 98]。要支援1〜2（地域包括支援センター）[cite: 97]、要介護1〜5（ケアマネジャー）[cite: 97]。</li>
+                <li><b>課題</b>：介護離職（年間約10.6万人、約75%が女性）[cite: 95]、ヤングケアラー、老老介護、認認介護、孤独死[cite: 67, 71]。</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="quiz" class="section">
+        <h2>4択クイズ（食30問超 ＆ 高齢者50問超 合計80問以上）</h2>
+        <div id="quiz-container"></div>
+        <button class="action-btn" onclick="initQuiz()">この単元のクイズをやり直す</button>
+    </div>
+
+    <div id="ox" class="section">
+        <h2>正誤判定（〇×）テスト（大量問題）</h2>
+        <div id="ox-container"></div>
+        <button class="action-btn" onclick="initOX()">この単元のテストをやり直す</button>
+    </div>
+
+    <div id="flashcard" class="section">
+        <h2>暗記フラッシュカード</h2>
+        <p style="text-align:center; color:var(--text-sub); font-size:0.9rem;">カードをクリックすると答えが表示されます。</p>
+        <div class="flashcard-container">
+            <div class="flashcard" onclick="flipCard()">
+                <div id="fc-tag" class="tag">全単元</div>
+                <div id="fc-text" style="font-size: 1.1rem; margin-top: 10px;">読み込み中...</div>
+            </div>
+        </div>
+        <div class="btn-group" style="margin-top: 15px;">
+            <button class="filter-btn" onclick="prevCard()">前のカード</button>
+            <button class="filter-btn" onclick="nextCard()">次のカード</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentCategory = 'all';
+
+    function setCategory(cat) {
+        currentCategory = cat;
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+
+        const sf = document.getElementById('sum-food');
+        const se = document.getElementById('sum-elderly');
+        if(cat === 'all') { sf.style.display = 'block'; se.style.display = 'block'; }
+        else if(cat === 'food') { sf.style.display = 'block'; se.style.display = 'none'; }
+        else { sf.style.display = 'none'; se.style.display = 'block'; }
+
+        initQuiz();
+        initOX();
+        currentCardIndex = 0;
+        updateFlashcard();
+    }
+
+    function switchTab(tabId) {
+        document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+
+    // 食単元 30問以上の4択クイズ
+    const foodQuizzes = [
+        { cat: 'food', q: "トマト冬春どり温室加温で作物1kg生産するのに必要なエネルギーはおよそ何kcalか？", options: ["1,176kcal", "5,054kcal", "11,948kcal", "10,458kcal"], ans: 2, exp: "冬春どり温室加温では11,948kcal（光熱・動力90%）と非常に大きなエネルギーを消費します。" },
+        { cat: 'food', q: "ピーマン冬春どりハウス加温で作物1kg生産するのに必要なエネルギーはおよそ何kcalか？", options: ["996kcal", "1,058kcal", "10,458kcal", "4,241kcal"], ans: 2, exp: "ピーマン冬春どりハウス加温は10,458kcal（光熱・動力85%）です。" },
+        { cat: 'food', q: "トマト冬春どりハウス加温で作物1kg生産するのに必要なエネルギーはおよそ何kcalか？", options: ["4,241kcal", "1,176kcal", "5,054kcal", "996kcal"], ans: 0, exp: "トマト冬春どりハウス加温は4,241kcalです。" },
+        { cat: 'food', q: "トマト夏秋どりハウス無加温で作物1kg生産するのに必要なエネルギーはおよそ何kcalか？", options: ["1,176kcal", "5,054kcal", "996kcal", "1,058kcal"], ans: 0, exp: "トマト夏秋どりハウス無加温は1,176kcalです。" },
+        { cat: 'food', q: "きゅうり冬春どりハウス加温で作物1kg生産するのに必要なエネルギーはおよそ何kcalか？", options: ["1,163kcal", "5,054kcal", "996kcal", "1,058kcal"], ans: 1, exp: "きゅうり冬春どりハウス加温は5,054kcal（光熱・動力76%）です。" },
+        { cat: 'food', q: "きゅうり冬春どりハウス無加温で作物1kg生産するのに必要なエネルギーはおよそ何kcalか？", options: ["1,163kcal", "996kcal", "1,058kcal", "4,241kcal"], ans: 0, exp: "きゅうり冬春どりハウス無加温は1,163kcalです。" },
+        { cat: 'food', q: "きゅうり夏秋どり露地で作物1kg生産するのに必要なエネルギーはおよそ何kcalか？", options: ["996kcal", "1,058kcal", "1,163kcal", "1,176kcal"], ans: 0, exp: "きゅうり夏秋どり露地は996kcalです。" },
+        { cat: 'food', q: "ピーマン夏秋どり露地で作物1kg生産するのに必要なエネルギーはおよそ何kcalか？", options: ["996kcal", "1,058kcal", "5,054kcal", "4,241kcal"], ans: 1, exp: "ピーマン夏秋どり露地は1,058kcalです。" },
+        { cat: 'food', q: "食品表示法における加工食品の原材料名の記載順ルールはどれか？", options: ["軽い順", "多く含まれる順", "五十音順", "カロリーの高い順"], ans: 1, exp: "食品添加物以外と添加物を分け、それぞれ多く含まれる順（重量順）に記載します。" },
+        { cat: 'food', q: "食品表示法でアレルギー物質として「表示義務化」されている8品目に含まれないものはどれか？", options: ["くるみ", "そば", "りんご", "落花生"], ans: 2, exp: "義務化8品目は「えび・かに・くるみ・小麦・そば・卵・乳・落花生」です。りんごは推奨品目です。" },
+        { cat: 'food', q: "冷蔵庫の「冷蔵室」の一般的な温度設定はおよそ何度か？", options: ["約4℃", "約-3℃", "約0℃", "約16℃"], ans: 0, exp: "冷蔵室は約4℃（サラダ・ジュース・卵など）です。" },
+        { cat: 'food', q: "冷蔵庫の「パーシャル室」の一般的な温度設定はおよそ何度か？", options: ["約4℃", "約-3℃", "約0℃", "約-20℃"], ans: 1, exp: "パーシャル室は約-3℃（魚介類・肉類）です。" },
+        { cat: 'food', q: "冷蔵庫の「チルド室」の一般的な温度設定はおよそ何度か？", options: ["約4℃", "約-3℃", "約0℃", "約16℃"], ans: 2, exp: "チルド室は約0℃（乳製品・練り製品・干物）です。" },
+        { cat: 'food', q: "冷蔵庫の「冷凍室」の一般的な温度設定はおよそ何度か？", options: ["約4℃", "約-3℃", "約0℃", "約-20℃"], ans: 3, exp: "冷凍室は約-20℃（冷凍食品）です。" },
+        { cat: 'food', q: "冷蔵庫の「野菜室」の一般的な温度設定はおよそ何度か？", options: ["約4℃", "約0℃", "約16℃", "約-20℃"], ans: 2, exp: "野菜室は約16℃で、高湿度とエチレンガスカットで鮮度を保持します。" },
+        { cat: 'food', q: "厚生労働省の令和5年食中毒統計で「事件数」の第1位となっているのはどれか？", options: ["細菌", "ウイルス", "寄生虫", "自然毒"], ans: 2, exp: "事件数（件数）では寄生虫が1位（44.7%）、患者数ではウイルスが1位（5,530人）となっています。" },
+        { cat: 'food', q: "厚生労働省の令和5年食中毒統計で「患者数」の第1位となっているのはどれか？", options: ["細菌", "ウイルス", "寄生虫", "化学物質"], ans: 1, exp: "患者数ではウイルスが1位（5,530人）です。" },
+        { cat: 'food', q: "寄生虫アニサキスの最も有効な予防方法はどれか？", options: ["塩漬けにして1時間放置", "冷凍（-20℃で24時間以上）または加熱", "レモン汁をかけて食べる", "常温で半日置く"], ans: 1, exp: "アニサキス予防には「冷凍（-20℃で24時間以上）」または「加熱（70℃以上、または60℃なら1分間）」が有効です。" },
+        { cat: 'food', q: "食中毒予防の3原則に含まれないものはどれか？", options: ["つけない", "冷やさない", "増やさない", "やっつける"], ans: 1, exp: "食中毒予防の3原則は「つけない」「増やさない」「やっつける」です。" },
+        { cat: 'food', q: "食品添加物に関する記述として正しいものはどれか？", options: ["厚生労働大臣が定めた指定添加物以外も自由に使える", "添加物の表示はすべて省略できる", "指定添加物は毒性やアレルギーなどの安全性評価を経て許可される", "添加物には一切のデメリットがない"], ans: 2, exp: "指定添加物は食品安全委員会等で安全性評価を経て厚生労働省に許可されます。" },
+        { cat: 'food', q: "微生物の繁殖を防ぐ保存方法のうち、塩辛や塩ざけに用いられるものはどれか？", options: ["乾燥", "くん煙", "塩漬け", "発酵"], ans: 2, exp: "塩漬けは食品中の水分を減少させ、微生物の利用できる水を減らします。" },
+        { cat: 'food', q: "乾麺、干物、切干だいこんなど、水分を減らして微生物の活動を抑える保存方法はどれか？", options: ["乾燥", "酢漬け", "砂糖漬け", "くん煙"], ans: 0, exp: "乾燥は水分を減らして微生物の活動を抑えます。" },
+        { cat: 'food', q: "チーズや納豆など、発酵微生物により他の微生物の活動を抑える保存方法はどれか？", options: ["乾燥", "発酵", "くん煙", "塩漬け"], ans: 1, exp: "発酵は発酵微生物を利用した保存方法です。" },
+        { cat: 'food', q: "ベーコンなどにみられる、煙の防腐や殺菌効果を利用した保存方法はどれか？", options: ["乾燥", "塩漬け", "くん煙（燻煙）", "酢漬け"], ans: 2, exp: "くん煙は煙の防腐・殺菌効果を利用します。" },
+        { cat: 'food', q: "ジャムなどにみられる、食品中の利用できる水分を減少させる保存方法はどれか？", options: ["砂糖漬け", "酢漬け", "乾燥", "くん煙"], ans: 0, exp: "砂糖漬けは糖分で水分を減少させます。" },
+        { cat: 'food', q: "らっきょうやピクルスなどにみられる、酸性にして微生物の繁殖を抑える保存方法はどれか？", options: ["塩漬け", "酢漬け", "乾燥", "くん煙"], ans: 1, exp: "酢漬けは酸性にして微生物の繁殖を抑えます。" },
+        { cat: 'food', q: "旬の食材を選ぶメリットとして間違っているものはどれか？", options: ["低価格である", "栄養価が高くおいしい", "環境への負荷が少ない", "保存期間が永久に延びる"], ans: 3, exp: "保存期間が永久に延びるわけではありません。" },
+        { cat: 'food', q: "食品表示法において生鮮食品に表示される基本的な項目はどれか？", options: ["名称と原産地", "原材料と賞味期限", "製造者と保存方法", "内容量と添加物"], ans: 0, exp: "生鮮食品は名称と原産地が表示されます。" },
+        { cat: 'food', q: "食中毒を引き起こす細菌性の食中毒が増加しやすい時期はいつか？", options: ["冬季", "初夏〜初秋", "春先のみ", "年間を通して全く変化しない"], ans: 1, exp: "細菌性の食中毒は気温が高くなる初夏〜初秋に増加します。" },
+        { cat: 'food', q: "ノロウイルスによる食中毒が多く発生する傾向にある季節はいつか？", options: ["夏季", "初秋", "冬季", "春季"], ans: 2, exp: "ノロウイルスは冬季に多く発生します。" },
+        { cat: 'food', q: "食品企業の衛生管理として、温度と時間の管理を継続的に監視・記録する方式を何というか？", options: ["抜取検査方式", "HACCP（ハサップ）方式", "官能検査方式", "検食方式"], ans: 1, exp: "HACCP方式に基づく衛生管理が導入されています。" }
+    ];
+
+    // 高齢者単元 50問以上の4択クイズ
+    const elderlyQuizzes = [
+        { cat: 'elderly', q: "日本の平均寿命は2023年時点で、男性が約81歳、女性が約何歳か？", options: ["83歳", "85歳", "87歳", "90歳"], ans: 2, exp: "2023年で男性81歳、女性87歳です。" },
+        { cat: 'elderly', q: "総人口に占める65歳以上人口の割合（高齢化率）はおよそ何%か？", options: ["14.1%", "21.5%", "29.1%", "35.4%"], ans: 2, exp: "高齢化率は29.1%、75歳以上は16.1%です。" },
+        { cat: 'elderly', q: "65歳以上の人口割合が21%以上を超える社会を何と呼ぶか？", options: ["高齢化社会", "高齢社会", "超高齢社会", "成熟社会"], ans: 2, exp: "7%以上＝高齢化社会、14%以上＝高齢社会、21%以上＝超高齢社会です。" },
+        { cat: 'elderly', q: "1965年には高齢者1人に対して生産年齢人口が何人いたか？", options: ["1.0人", "2.0人", "2.9人", "9.1人"], ans: 3, exp: "1965年は9.1人でした。" },
+        { cat: 'elderly', q: "2050年の推計において、高齢者1人に対して生産年齢人口は何人になると予測されているか？", options: ["1.0人", "2.0人", "2.9人", "9.1人"], ans: 0, exp: "2050年には高齢者1人に対し生産年齢人口1.0人になると予測されています。" },
+        { cat: 'elderly', q: "健康寿命と平均寿命の差はおよそ何年か？", options: ["約3年", "約5年", "約10年", "約15年"], ans: 2, exp: "健康寿命と平均寿命の差は約10年です。" },
+        { cat: 'elderly', q: "高齢者が抱える「3つの不安」に含まれないものはどれか？", options: ["健康", "お金", "孤独", "仕事の昇進"], ans: 3, exp: "高齢者の3つの不安は「健康」「お金」「孤独」です。" },
+        { cat: 'elderly', q: "高齢者の転倒・転落事故のうち、何%が「自宅（住宅等居住空間）」で起きているか？", options: ["20.5%", "41.3%", "57.7%", "85.0%"], ans: 2, exp: "転倒・転落事故の57.7%は自宅で起きています。" },
+        { cat: 'elderly', q: "高齢ドライバーによる死亡事故（令和元年）の人的要因として最も割合が高いものはどれか？", options: ["ブレーキとアクセルの踏み違い", "操作不適", "判断の誤り", "外在的前方不注意"], ans: 1, exp: "操作不適が28%で最も高くなっています。" },
+        { cat: 'elderly', q: "75歳以上高齢運転者の死亡事故における「ブレーキとアクセル踏み違い」の割合はおよそ何%か？", options: ["1.0%", "7.0%", "15.5%", "25.0%"], ans: 1, exp: "ブレーキとアクセルの踏み違いは7.0%です。" },
+        { cat: 'elderly', q: "65歳以上の運転免許返納件数のピーク時はおよそ何件か？", options: ["約10万件", "約30万件", "約57万件", "約100万件"], ans: 2, exp: "免許返納はピーク時で約57万件でした。" },
+        { cat: 'elderly', q: "骨粗しょう症によって骨折しやすい部位として適切でないものはどれか？", options: ["背骨", "手首", "足のつけ根", "鎖骨"], ans: 3, exp: "資料では背骨、手首、腕のつけ根、足のつけ根が挙げられています。" },
+        { cat: 'elderly', q: "介護が必要になった原因の第1位はどれか？", options: ["認知症", "脳血管障害", "転倒・骨折", "関節疾患"], ans: 1, exp: "介護が必要になった理由の1位は脳血管障害、2位は認知症です。" },
+        { cat: 'elderly', q: "介護が必要になった原因の第2位はどれか？", options: ["認知症", "加齢による虚弱", "高齢化", "関節疾患"], ans: 0, exp: "2位は認知症です。" },
+        { cat: 'elderly', q: "介護が必要になった原因の第5位はどれか？", options: ["脳血管障害", "認知症", "転倒・骨折", "関節疾患"], ans: 2, exp: "5位は転倒・骨折です。" },
+        { cat: 'elderly', q: "高齢者の加齢に伴う味覚の変化として、特に感じにくくなり塩分過剰摂取につながる味はどれか？", options: ["甘味", "苦味", "酸味", "塩味"], ans: 3, exp: "塩味の閾値が高くなり感じにくくなります。" },
+        { cat: 'elderly', q: "高齢者の血管の衰えや持病により引き起こされやすい、脳梗塞や心筋梗塞につながる病気を何というか？", options: ["骨粗しょう症", "動脈硬化", "白内障", "ロコモティブシンドローム"], ans: 1, exp: "動脈硬化が起こりやすくなります。" },
+        { cat: 'elderly', q: "直感力や処理スピード、計算能力など、年齢とともに低下しやすい知能を何と呼ぶか？", options: ["結晶性知能", "流動性知能", "言語性知能", "実践知能"], ans: 1, exp: "流動性知能は低下しやすい傾向にあります。" },
+        { cat: 'elderly', q: "言語能力や理解力、判断力など、年齢を重ねても維持されやすい知能を何と呼ぶか？", options: ["流動性知能", "結晶性知能", "感覚知能", "運動知能"], ans: 1, exp: "結晶性知能は維持されます。" },
+        { cat: 'elderly', q: "認知症の方への接し方として適切でないものはどれか？", options: ["話す前に名前を呼ぶ", "短くわかりやすい表現にする", "思い込みで行動する", "表情に着目する"], ans: 2, exp: "思い込みで行動しないことがポイントです。" },
+        { cat: 'elderly', q: "麻痺のある高齢者の着替え（着脱衣）の原則として正しいものはどれか？", options: ["着健脱患", "着患脱健", "着患脱患", "着健脱健"], ans: 1, exp: "着患脱健（患側から着せ、健側から脱がせる）です。" },
+        { cat: 'elderly', q: "憲法第25条「すべて国民は健康で文化的な最低限度の生活を営む権利を有する」にのっとって作られた制度はどれか？", options: ["教育制度", "社会保障制度", "金融制度", "税制"], ans: 1, exp: "社会保障制度の基本です。" },
+        { cat: 'elderly', q: "社会保障の3つの機能に含まれないものはどれか？", options: ["生活安定・向上機能", "所得再分配機能", "経済安定機能", "娯楽促進機能"], ans: 3, exp: "社会保障の3つの機能は「生活安定・向上」「所得再分配」「経済安定」です。" },
+        { cat: 'elderly', q: "経済的なリスクに備える5つの社会保険に含まれないものはどれか？", options: ["年金保険", "医療保険", "火災保険", "雇用保険"], ans: 2, exp: "5つの社会保険は「年金保険」「医療保険」「雇用保険」「介護保険」「労働者災害補償保険」です。" },
+        { cat: 'elderly', q: "公的年金制度の「1階部分」にあたり、20歳以上60歳未満のすべての人が加入するのはどれか？", options: ["厚生年金", "国民年金（基礎年金）", "企業年金", "iDeCo"], ans: 1, exp: "1階は国民年金（基礎年金）です。" },
+        { cat: 'elderly', q: "会社員や公務員が加入する公的年金の「2階部分」はどれか？", options: ["国民年金", "厚生年金保険", "国民年金基金", "個人型年金"], ans: 1, exp: "2階部分は厚生年金保険です。" },
+        { cat: 'elderly', q: "学生なので収入がなく国民年金保険料が納められない場合に利用できる制度はどれか？", options: ["学生納付特例制度", "生活保護制度", "育児休業制度", "介護休業制度"], ans: 0, exp: "学生納付特例制度があります。" },
+        { cat: 'elderly', q: "令和6年度の老齢基礎年金（満額）の年間受給額はおよそいくらか？", options: ["約50万円", "約68万円", "約81万6千円", "約120万円"], ans: 2, exp: "満額はおよそ年間816,000円です。" },
+        { cat: 'elderly', q: "日常生活に欠かせない基本的な動き（食事、排泄、更衣、移動など）を英語の頭文字で何というか？", options: ["ADL", "QOL", "NPO", "HACCP"], ans: 0, exp: "ADL（Activities of Daily Living）です。" },
+        { cat: 'elderly', q: "単に病気がないことだけでなく「幸福感を持って生活できているか」という人生の満足度を重視することを何というか？", options: ["ADL", "QOL（Quality of Life）", "ロコモ", "ケアプラン"], ans: 1, exp: "QOL（Quality of Life）です。" },
+        { cat: 'elderly', q: "介護保険制度の保険者（実施主体）はどこか？", options: ["国", "都道府県", "市区町村", "保健所"], ans: 2, exp: "保険者は市区町村です。" },
+        { cat: 'elderly', q: "介護保険の被保険者となるのは何歳以上の人か？", options: ["20歳以上", "40歳以上", "65歳以上", "75歳以上"], ans: 1, exp: "40歳以上の人が被保険者となります。" },
+        { cat: 'elderly', q: "介護保険のサービスを利用する際、所得に応じた自己負担割合はどれか？", options: ["一律1割", "1〜3割", "3〜5割", "全額負担"], ans: 1, exp: "利用料は1〜3割の自己負担です。" },
+        { cat: 'elderly', q: "介護認定で「要支援1〜2」の場合、誰と介護予防サービス計画を立てるか？", options: ["ケアマネジャー", "地域包括支援センター", "市区町村長", "主治医のみ"], ans: 1, exp: "地域包括支援センターと計画を立てます。" },
+        { cat: 'elderly', q: "介護認定で「要介護1〜5」の場合、誰と居宅サービス計画（ケアプラン）を立てるか？", options: ["ケアマネジャー", "民生委員", "警察官", "保健師"], ans: 0, exp: "ケアマネジャーとケアプランを立てます。" },
+        { cat: 'elderly', q: "介護離職に関する説明として正しいものはどれか？", options: ["年間約10.6万人が離職し、その約75%が女性である", "離職者の90%が男性である", "介護離職は近年存在しない", "離職者は全員高齢男性である"], ans: 0, exp: "年間約10.6万人のうち約75%が女性です。" },
+        { cat: 'elderly', q: "高齢者の視覚の変化において、水晶体が濁ることで見えにくくなる目の病気を何というか？", options: ["緑内障", "白内障", "結膜炎", "近視"], ans: 1, exp: "白内障があります。" },
+        { cat: 'elderly', q: "高齢者の聴力の変化として、聞き取りにくくなりやすい音はどれか？", options: ["低い音", "高い音（電子音やチャイムなど）", "男性の低い話し声", "電車の走行音"], ans: 1, exp: "高い音が聞き取りにくくなります。" },
+        { cat: 'elderly', q: "育児・介護休業法により定められていることとして正しいものはどれか？", options: ["家族の介護のための休暇や休業、時短勤務ができる", "介護休業中は給与が10倍になる", "介護休業は取得が完全に義務で拒否できない", "若者は介護休業を取得できない"], ans: 0, exp: "介護のための休暇や休業、時短勤務が定められています。" },
+        { cat: 'elderly', q: "公的年金の種類に含まれないものはどれか？", options: ["老齢年金", "遺族年金", "障害年金", "学資年金"], ans: 3, exp: "公的年金は老齢・遺族・障害年金です。" },
+        { cat: 'elderly', q: "国民年金の保険料を納めていない期間がある場合、将来どうなるか？", options: ["満額を受け取れる", "受け取る年金額が少なくなる", "自動的に給付額が増える", "年金がもらえなくなることは絶対にない"], ans: 1, exp: "納付期間が短いと受け取る年金額が少なくなります。" },
+        { cat: 'elderly', q: "自分の支払状況が記載され、誕生月に送付される確認書類はどれか？", options: ["源泉徴収票", "年金定期便", "確定申告書", "健康診断書"], ans: 1, exp: "年金定期便を確認します。" },
+        { cat: 'elderly', q: "1年間産休や育休をとった場合、その期間の厚生年金保険料はどうなるか？", options: ["2倍支払う", "全額没収される", "支払いが免除され将来の年金額にも影響しない", "受給資格が消滅する"], ans: 2, exp: "保険料の支払いが免除され、将来の年金額にも影響しません。" },
+        { cat: 'elderly', q: "高齢者夫婦の暮らし（持ち家）において、1か月の生活費の目安は約いくらか？", options: ["10万円", "20万円", "30万円", "50万円"], ans: 2, exp: "高齢者夫婦の暮らし（持ち家）の1か月の生活費は約30万円です。" },
+        { cat: 'elderly', q: "高齢者一人暮らし（持ち家）において、1か月の生活費の目安は約いくらか？", options: ["10万円", "20万円", "30万円", "40万円"], ans: 1, exp: "高齢者一人暮らし（持ち家）は約20万円です。" },
+        { cat: 'elderly', q: "高齢者一人暮らし（賃貸）において、1か月の生活費の目安は約いくらか？", options: ["15万円", "25万円", "35万円", "45万円"], ans: 1, exp: "高齢者一人暮らし（賃貸）は約25万円です。" },
+        { cat: 'elderly', q: "高齢者の消費者トラブルに見られる特徴として正しいものはどれか？", options: ["すぐに警察に通報する", "だまされたことに気づきにくく、誰にも言わない", "若者より絶対に被害に遭わない", "家族にすべて正直に話す"], ans: 1, exp: "だまされたことに気づきにくく、恥ずかしさ等で誰にも言わない特徴があります。" },
+        { cat: 'elderly', q: "介護を行う際に配慮すべきこととして最も適切なものはどれか？", options: ["介護者の方が上の立場として指導する", "高齢者と介護者は対等な立場である", "完全な治癒を必ず目的とする", "会話をする必要はない"], ans: 1, exp: "介護する側もされる側も対等な立場にあることが最も重要です。" },
+        { cat: 'elderly', q: "高齢者単独世帯や高齢者夫婦のみの世帯の傾向として正しいものはどれか？", options: ["減少している", "増加傾向にある", "全く存在しない", "若い世帯と同義である"], ans: 1, exp: "単独世帯や夫婦のみ世帯は増加しています。" },
+        { cat: 'elderly', q: "祖父母や親の介護を担う10代の若者を何と呼ぶか？", options: ["ヤングケアラー", "シニアケアラー", "ビジネスマン", "ボランティア"], ans: 0, exp: "ヤングケアラーと呼ばれています。" }
+    ];
+
+    const allQuizData = [...foodQuizzes, ...elderlyQuizzes];
+
+    function initQuiz() {
+        const container = document.getElementById('quiz-container');
+        container.innerHTML = '';
+        const list = allQuizData.filter(item => currentCategory === 'all' || item.cat === currentCategory);
+
+        list.forEach((q, index) => {
+            const card = document.createElement('div');
+            card.className = 'quiz-card';
+            const catLabel = q.cat === 'food' ? '🍱 食の安全' : '👵 高齢者';
+            card.innerHTML = `<span class="tag">${catLabel}</span><p style="margin:5px 0 10px 0; font-weight:600;">Q${index+1}. ${q.q}</p>`;
+            
+            const optionsDiv = document.createElement('div');
+            optionsDiv.className = 'options';
+
+            q.options.forEach((opt, optIndex) => {
+                const btn = document.createElement('button');
+                btn.innerText = opt;
+                btn.onclick = () => {
+                    const buttons = optionsDiv.querySelectorAll('button');
+                    buttons.forEach(b => b.disabled = true);
+                    const exp = card.querySelector('.explanation');
+                    exp.style.display = 'block';
+
+                    if(optIndex === q.ans) {
+                        btn.classList.add('correct');
+                        exp.innerHTML = '<b>正解！</b><br>' + q.exp;
+                    } else {
+                        btn.classList.add('incorrect');
+                        buttons[q.ans].classList.add('correct');
+                        exp.innerHTML = '<b>不正解…</b><br>' + q.exp;
+                    }
+                };
+                optionsDiv.appendChild(btn);
+            });
+
+            card.appendChild(optionsDiv);
+            const expDiv = document.createElement('div');
+            expDiv.className = 'explanation';
+            card.appendChild(expDiv);
+            container.appendChild(card);
+        });
+    }
+
+    const allOXData = [
+        { cat: 'food', q: "加工食品の原材料名は、食品添加物以外と添加物を分け、多く含まれる順に記載する。", ans: true, exp: "正しい記述です。" },
+        { cat: 'food', q: "賞味期限は、品質が速やかに劣化するお弁当などに表示される安全性の限界である。", ans: false, exp: "それは「消費期限」の説明です。賞味期限は劣化が比較的遅い食品のおいしさの限界です。" },
+        { cat: 'food', q: "HACCP（ハサップ）は、従来の抜取検査に加え、温度・時間管理や異物検出を継続的に監視・記録する衛生管理手法である。", ans: true, exp: "正しい記述です。" },
+        { cat: 'food', q: "生鮮食品の食品表示には、名称や原材料名、消費期限などが細かく記載されている。", ans: false, exp: "生鮮食品は主に「名称」と「原産地」が表示されます。" },
+        { cat: 'food', q: "ノロウイルスによる食中毒は、冬季に多く発生するため年間を通じた注意は不要である。", ans: false, exp: "ノロウイルスは冬季に多いですが年間通じて注意が必要です。" },
+        { cat: 'food', q: "旬の食材は、流通量が多く低価格で、栄養価が高く環境負荷も少ないというメリットがある。", ans: true, exp: "正しい記述です。" },
+        { cat: 'food', q: "アレルギー物質の表示義務化8品目に、えびやにんにくが含まれている。", ans: false, exp: "義務化8品目は「えび・かに・くるみ・小麦・そば・卵・乳・落花生」です（にんにくは含まれません）。" },
+        { cat: 'elderly', q: "日本の高齢化率（65歳以上割合）は2023年時点で29.1%である。", ans: true, exp: "正しい記述です。75歳以上割合は16.1%です。" },
+        { cat: 'elderly', q: "高齢者の転倒・転落事故の半数以上は、道路や交通施設などの屋外で発生している。", ans: false, exp: "転倒・転落事故の57.7%は「自宅（住宅等居住空間）」で起きています。" },
+        { cat: 'elderly', q: "産休・育休中に厚生年金保険料が免除された場合、将来受け取る年金額もその分少なくなる。", ans: false, exp: "保険料を支払っていなくても、支払ったものとして将来の年金額に反映されるため減額されません。" },
+        { cat: 'elderly', q: "要介護認定で「要介護1〜5」と判定された場合、ケアマネジャーと居宅サービス計画（ケアプラン）を立てる。", ans: true, exp: "正しい記述です（要支援1〜2は地域包括支援センター）。" },
+        { cat: 'elderly', q: "高齢者への接し方として、思い込みで行動せず、話す前に名前を呼んで短くわかりやすい表現で伝えることが大切である。", ans: true, exp: "正しい記述です。" },
+        { cat: 'elderly', q: "介護保険制度の被保険者となるのは、65歳以上の高齢者のみである。", ans: false, exp: "介護保険の被保険者は「40歳以上」のすべての人です。" },
+        { cat: 'elderly', q: "流動性知能は加齢とともに低下しやすいが、結晶性知能は維持される傾向にある。", ans: true, exp: "正しい記述です。" },
+        { cat: 'elderly', q: "高齢者の介護は、完全な回復や治癒を目的としている。", ans: false, exp: "介護は完全な回復や治癒を目的としておらず、日常動作の維持・向上やQOLの向上を目指します。" }
+    ];
+
+    function initOX() {
+        const container = document.getElementById('ox-container');
+        container.innerHTML = '';
+        const list = allOXData.filter(item => currentCategory === 'all' || item.cat === currentCategory);
+
+        list.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'quiz-card';
+            const catLabel = item.cat === 'food' ? '🍱 食の安全' : '👵 高齢者';
+            card.innerHTML = `
+                <span class="tag">${catLabel}</span>
+                <p style="margin:5px 0 10px 0; font-weight:600;">問${index+1}. ${item.q}</p>
+                <div class="options">
+                    <button onclick="checkOX(this, true, ${item.ans}, '${item.exp}')">⭕ 正しい</button>
+                    <button onclick="checkOX(this, false, ${item.ans}, '${item.exp}')">❌ 間違い</button>
+                </div>
+                <div class="explanation"></div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function checkOX(btn, userAns, correctAns, expText) {
+        const parent = btn.parentElement;
+        parent.querySelectorAll('button').forEach(b => b.disabled = true);
+        const card = parent.parentElement;
+        const expDiv = card.querySelector('.explanation');
+        expDiv.style.display = 'block';
+
+        if(userAns === correctAns) {
+            btn.classList.add('correct');
+            expDiv.innerHTML = '<b>正解！</b><br>' + expText;
+        } else {
+            btn.classList.add('incorrect');
+            expDiv.innerHTML = '<b>不正解…</b><br>' + expText;
+        }
+    }
+
+    const allFlashcards = [
+        { cat: 'food', q: "食品表示：加工食品の原材料名の記載順ルールは？", a: "食品添加物以外の原材料と添加物を分け、それぞれ「多く含まれる順」に記載する。" },
+        { cat: 'food', q: "アレルギー表示の「義務化8品目」とは？", a: "えび、かに、くるみ、小麦、そば、卵、乳、落花生" },
+        { cat: 'food', q: "消費期限と賞味期限の違いは？", a: "消費期限：早く劣化するもの。安全に食べられる限界。<br>賞味期限：劣化が比較的遅いもの。おいしく食べられる期限。" },
+        { cat: 'food', q: "冷蔵庫の各所温度（冷蔵室、パーシャル、チルド、冷凍、野菜室）は？", a: "冷蔵室:約4℃<br>パーシャル:-3℃<br>チルド:約0℃<br>冷凍:-20℃<br>野菜室:約16℃" },
+        { cat: 'food', q: "食中毒統計（令和5年）：事件数1位と患者数1位の原因生物・物質は？", a: "事件数1位：寄生虫（44.7%）<br>患者数1位：ウイルス（5,530人）" },
+        { cat: 'food', q: "アニサキスの最も有効な2つの予防法は？", a: "① 冷凍（-20℃で24時間以上）<br>② 加熱（70℃以上、または60℃で1分間）" },
+        { cat: 'elderly', q: "高齢化率の分類（7%, 14%, 21%）の名称と日本の現状は？", a: "7%以上：高齢化社会<br>14%以上：高齢社会<br>21%以上：超高齢社会<br>（日本は29.1%で超高齢社会）" },
+        { cat: 'elderly', q: "知能の変化：流動性知能と結晶性知能の違いは？", a: "流動性知能：直感・処理速度・計算等（加齢で低下しやすい）<br>結晶性知能：言語・判断・洞察力等（加齢後も維持されやすい）" },
+        { cat: 'elderly', q: "公的年金の「3階建て構造」を答えよ。", a: "1階：国民年金（基礎年金・全員）<br>2階：厚生年金（会社員等）<br>3階：iDeCo・企業年金等" },
+        { cat: 'elderly', q: "介護の基本ルール：着脱衣の原則「着患脱健」とは？", a: "着せるときは不自由な（患側）から、脱がせるときは自由な（健側）から行うこと。" },
+        { cat: 'elderly', q: "介護保険制度：保険者（主体）と被保険者の条件は？", a: "保険者：市区町村<br>被保険者：40歳以上のすべての人" }
+    ];
+
+    let currentCardIndex = 0;
+    let isFlipped = false;
+
+    function getFilteredFlashcards() {
+        return allFlashcards.filter(item => currentCategory === 'all' || item.cat === currentCategory);
+    }
+
+    function updateFlashcard() {
+        const list = getFilteredFlashcards();
+        const fcText = document.getElementById('fc-text');
+        const fcTag = document.getElementById('fc-tag');
+
+        if(list.length === 0) {
+            fcText.innerHTML = "該当するカードがありません。";
+            fcTag.innerText = "なし";
+            return;
+        }
+
+        isFlipped = false;
+        const card = list[currentCardIndex];
+        fcTag.innerText = card.cat === 'food' ? '🍱 食の安全' : '👵 高齢者';
+        fcText.innerHTML = `<b>【カード ${currentCardIndex+1} / ${list.length}】</b><br><br>${card.q}`;
+    }
+
+    function flipCard() {
+        const list = getFilteredFlashcards();
+        if(list.length === 0) return;
+
+        const fcText = document.getElementById('fc-text');
+        if(!isFlipped) {
+            fcText.innerHTML = `<b>【答え】</b><br><br>${list[currentCardIndex].a}`;
+            isFlipped = true;
+        } else {
+            updateFlashcard();
+        }
+    }
+
+    function nextCard() {
+        const list = getFilteredFlashcards();
+        if(list.length === 0) return;
+        currentCardIndex = (currentCardIndex + 1) % list.length;
+        updateFlashcard();
+    }
+
+    function prevCard() {
+        const list = getFilteredFlashcards();
+        if(list.length === 0) return;
+        currentCardIndex = (currentCardIndex - 1 + list.length) % list.length;
+        updateFlashcard();
+    }
+
+    window.onload = function() {
+        initQuiz();
+        initOX();
+        updateFlashcard();
+    };
+</script>
+
+</body>
+</html>
